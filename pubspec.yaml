@@ -59,8 +59,8 @@ flutter:
   fonts:
     - family: Inter
       fonts:
-        - asset: assets/fonts/inter_regular.otf
-        - asset: assets/fonts/inter_bold.otf
+        - asset: assets/fonts/Inter/inter_regular.otf
+        - asset: assets/fonts/Inter/inter_bold.otf
           weight: 700
 
   # To add assets to your application, add an assets section, like this:
