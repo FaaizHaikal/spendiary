@@ -19,7 +19,7 @@ class AuthService {
     if (response.statusCode == 200) {
       return AuthResponse.fromJson(data);
     } else {
-      final error = data['message'];
+      final error = data['error'] ?? 'Failed to login';
       
       throw Exception(error);
     }
@@ -38,7 +38,7 @@ class AuthService {
     if (response.statusCode == 201) {
       return;
     } else {
-      final error = jsonDecode(response.body)['message'];
+      final error = jsonDecode(response.body)['error'] ?? 'Failed to register';
       
       throw Exception(error);
     }
