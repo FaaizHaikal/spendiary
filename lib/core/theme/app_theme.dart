@@ -13,7 +13,7 @@ class AppTheme {
     ),
     textTheme: const TextTheme(
       titleLarge: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      bodySmall: TextStyle(fontSize: 12)
+      bodySmall: TextStyle(fontSize: 12),
     ),
   );
 }
