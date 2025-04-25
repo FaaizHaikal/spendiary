@@ -4,7 +4,10 @@ class StorageService {
   static const _accessTokenKey = 'access_token';
   static const _refreshTokenKey = 'refresh_token';
 
-  static Future<void> saveTokens(String accessToken, String refreshToken) async {
+  static Future<void> saveTokens(
+    String accessToken,
+    String refreshToken,
+  ) async {
     final prefs = await SharedPreferences.getInstance();
 
     await prefs.setString(_accessTokenKey, accessToken);
@@ -23,7 +26,7 @@ class StorageService {
 
   static Future<void> clearTokens() async {
     final prefs = await SharedPreferences.getInstance();
-    
+
     await prefs.remove(_accessTokenKey);
     await prefs.remove(_refreshTokenKey);
   }

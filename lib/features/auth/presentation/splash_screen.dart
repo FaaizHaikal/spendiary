@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'login_screen.dart';
-import '../../dashboard/presentation/dashboard_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -29,13 +28,17 @@ class _SplashScreenState extends State<SplashScreen> {
       //   context,
       //   MaterialPageRoute(builder: (_) => const DashboardScreen())
       // );
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Welcome back!'))
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(content: Text('Welcome back!'))
+      // );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const LoginScreen()),
       );
     } else {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const LoginScreen())
+        MaterialPageRoute(builder: (_) => const LoginScreen()),
       );
     }
   }
@@ -43,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(child: Text('Spendiary', style: TextStyle(fontSize: 24)))
+      body: Center(child: Text('Spendiary', style: TextStyle(fontSize: 24))),
     );
   }
 }

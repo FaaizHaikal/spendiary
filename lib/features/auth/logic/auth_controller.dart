@@ -6,7 +6,10 @@ class AuthController {
     try {
       final response = await AuthService.login(username, password);
 
-      await StorageService.saveTokens(response.accessToken, response.refreshToken);
+      await StorageService.saveTokens(
+        response.accessToken,
+        response.refreshToken,
+      );
 
       return null;
     } catch (e) {

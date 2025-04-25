@@ -8,19 +8,16 @@ class AuthService {
     final response = await http.post(
       Uri.parse('$baseUrl/api/login'),
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'username': username,
-        'password': password,
-      }),
+      body: jsonEncode({'username': username, 'password': password}),
     );
-    
+
     final data = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
       return AuthResponse.fromJson(data);
     } else {
       final error = data['error'] ?? 'Failed to login';
-      
+
       throw Exception(error);
     }
   }
@@ -29,17 +26,14 @@ class AuthService {
     final response = await http.post(
       Uri.parse('$baseUrl/api/register'),
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'username': username,
-        'password': password,
-      }),
+      body: jsonEncode({'username': username, 'password': password}),
     );
 
     if (response.statusCode == 201) {
       return;
     } else {
       final error = jsonDecode(response.body)['error'] ?? 'Failed to register';
-      
+
       throw Exception(error);
     }
   }
