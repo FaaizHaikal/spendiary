@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:spendiary/features/auth/logic/auth_controller.dart';
+import 'package:spendiary/features/auth/presentation/widgets/auth_button.dart';
+import 'package:spendiary/features/auth/presentation/widgets/input_field.dart';
+import 'package:spendiary/core/theme/app_colors.dart';
 import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -13,8 +16,17 @@ class _LoginScreenState extends State<LoginScreen> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isLoading = false;
+  String? _errorMessage;
 
   Future<void> _handleLogin() async {
+    if (_usernameController.text.isEmpty || _passwordController.text.isEmpty) {
+      setState(() {
+        _errorMessage = "Username and password cannot be empty.";
+      });
+
+      return;
+    }
+
     setState(() => _isLoading = true);
 
     final error = await AuthController.login(
@@ -27,13 +39,13 @@ class _LoginScreenState extends State<LoginScreen> {
       //   context,
       //   MaterialPageRoute(builder: (_) => const DashboardScreen())
       // );
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Login Successful!')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Login Successful!')));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(error)),
-      );
+      setState(() {
+        _errorMessage = error;
+      });
     }
 
     setState(() => _isLoading = false);
@@ -41,42 +53,47 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold (
+    return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("Login", style: TextStyle(fontSize: 22)),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _usernameController,
-              decoration: const InputDecoration(labelText: 'Username'),
-            ),
-            TextField(
+            InputField(label: 'Username', controller: _usernameController),
+            const SizedBox(height: 12),
+            InputField(
+              label: 'Password',
               controller: _passwordController,
-              decoration: const InputDecoration(labelText: 'Password'),
               obscureText: true,
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _isLoading ? null : _handleLogin,
-              child: _isLoading
-                ? const CircularProgressIndicator()
-                : const Text("Login"),
+            const SizedBox(height: 12),
+            if (_errorMessage != null)
+              Align(
+                alignment: Alignment.centerLeft, // Aligns the text to the left
+                child: Text(
+                  _errorMessage!,
+                  style: const TextStyle(color: AppColors.redPrimary),
+                ),
+              ),
+            const SizedBox(height: 24),
+            AuthButton(
+              text: 'Login',
+              onPressed: _handleLogin,
+              isLoading: _isLoading,
             ),
+            const SizedBox(height: 16),
             TextButton(
               onPressed: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (_) => const RegisterScreen())
+                  MaterialPageRoute(builder: (_) => const RegisterScreen()),
                 );
               },
-              child: const Text("Don't have an account? Register"),
-            )
+              child: const Text('Don\'t have an account? Register'),
+            ),
           ],
-        )
-      )
+        ),
+      ),
     );
   }
 }
