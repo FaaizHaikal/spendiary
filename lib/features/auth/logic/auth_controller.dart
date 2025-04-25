@@ -10,7 +10,7 @@ class AuthController {
 
       return null;
     } catch (e) {
-      return e.toString();
+      return e.toString().replaceFirst('Exception: ', '');
     }
   }
 
@@ -20,7 +20,7 @@ class AuthController {
 
       return null;
     } catch (e) {
-      return e.toString();
+      return e.toString().replaceFirst('Exception: ', '');
     }
   }
 
