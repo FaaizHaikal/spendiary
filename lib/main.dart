@@ -14,7 +14,7 @@ class SpendiaryApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Spendiary',
-      theme: AppTheme.darkTheme,
+      theme: AppTheme.appTheme,
       home: const SplashScreen(),
     );
   }
