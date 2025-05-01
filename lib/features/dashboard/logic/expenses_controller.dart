@@ -11,6 +11,14 @@ class ExpensesController {
     }
   }
 
+  static Future<List<Expense>> getRecentExpenses(int count) async {
+    try {
+      return await ExpenseService.getRecentExpenses(count);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   static Future<List<Expense>> getCurrentMonthExpenses() async {
     try {
       return await ExpenseService.getCurrentMonthExpenses();
