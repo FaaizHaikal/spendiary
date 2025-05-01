@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:spendiary/core/models/expense.dart';
 import 'package:spendiary/features/dashboard/data/models/chart_point.dart';
 import 'package:spendiary/features/dashboard/logic/expenses_controller.dart';
 import 'package:spendiary/features/dashboard/presentation/widgets/expenses_chart.dart';
@@ -13,41 +14,26 @@ class ExpensesContent extends StatefulWidget {
 
 class _ExpensesContentState extends State<ExpensesContent> {
   final List<String> _periodOptions = ['Day', 'Week', 'Month', 'Year'];
-  int _selectedIndex = 2;
+  int _selectedIndex = 1;
 
-  late Map<String, List<ChartPoint>> _chartDataMap;
+  late List<ChartPoint> _chartData;
+  late List<Expense> _recentExpenses;
   bool _isLoading = true;
   String? _currentLoadingPeriod; // Track which period is currently loading
 
   @override
   void initState() {
     super.initState();
-    _chartDataMap = {for (var period in _periodOptions) period: []};
-    _fetchAllChartData();
+    _fetchRecentExpenses();
+    _refreshData();
   }
 
-  Future<void> _fetchAllChartData() async {
-    setState(() => _isLoading = true);
-
-    for (final period in _periodOptions) {
-      try {
-        setState(() => _currentLoadingPeriod = period);
-        final data = await ExpensesController.getExpensesByPeriod(
-          period.toLowerCase(),
-        );
-        
-        _chartDataMap[period] = data;
-      } catch (e) {
-        _chartDataMap[period] = [];
-        debugPrint('Error fetching $period data: $e');
-      }
-    }
-
-    if (mounted) {
-      setState(() {
-        _isLoading = false;
-        _currentLoadingPeriod = null;
-      });
+  Future<void> _fetchRecentExpenses() async {
+    try {
+      _recentExpenses = await ExpensesController.getRecentExpenses(3);
+    } catch (e) {
+      _recentExpenses = [];
+      debugPrint('Error fetching recent expenses: $e');
     }
   }
 
@@ -65,7 +51,7 @@ class _ExpensesContentState extends State<ExpensesContent> {
 
       if (mounted) {
         setState(() {
-          _chartDataMap[period] = data;
+          _chartData = data;
           _isLoading = false;
           _currentLoadingPeriod = null;
         });
@@ -73,7 +59,7 @@ class _ExpensesContentState extends State<ExpensesContent> {
     } catch (e) {
       if (mounted) {
         setState(() {
-          _chartDataMap[period] = [];
+          _chartData = [];
           _isLoading = false;
           _currentLoadingPeriod = null;
         });
@@ -85,7 +71,6 @@ class _ExpensesContentState extends State<ExpensesContent> {
   @override
   Widget build(BuildContext context) {
     final selectedPeriod = _periodOptions[_selectedIndex];
-    final chartData = _chartDataMap[selectedPeriod] ?? [];
     final isCurrentPeriodLoading = _currentLoadingPeriod == selectedPeriod;
 
     return Column(
@@ -111,7 +96,7 @@ class _ExpensesContentState extends State<ExpensesContent> {
                 child: CircularProgressIndicator(),
               ),
             )
-            : chartData.isEmpty
+            : _chartData.isEmpty
             ? Center(
               child: Column(
                 children: [
@@ -130,7 +115,7 @@ class _ExpensesContentState extends State<ExpensesContent> {
               onRefresh: _refreshData,
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
-                child: ExpensesChart(data: chartData),
+                child: ExpensesChart(data: _chartData),
               ),
             ),
       ],
