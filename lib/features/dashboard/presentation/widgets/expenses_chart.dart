@@ -63,15 +63,19 @@ class ExpensesChart extends StatelessWidget {
                     sideTitles: SideTitles(
                       showTitles: true,
                       getTitlesWidget: (value, meta) {
-                        return Text(
-                          _formatNumber(value),
-                          style: const TextStyle(
-                            fontSize: 10,
-                            color: Colors.grey,
+                        return Container(
+                          alignment: Alignment.centerRight,
+                          padding: EdgeInsets.only(right: 4.0),
+                          child: Text(
+                            _formatNumber(value),
+                            style: const TextStyle(
+                              fontSize: 10,
+                              color: Colors.grey,
+                            ),
                           ),
                         );
                       },
-                      reservedSize: 32,
+                      reservedSize: 45,
                     ),
                   ),
                   rightTitles: AxisTitles(
