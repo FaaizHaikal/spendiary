@@ -12,7 +12,7 @@ class AuthButton extends StatelessWidget {
     Key? key,
     required this.text,
     required this.onPressed,
-    this.color = AppColors.bluePrimary,
+    this.color = AppColors.primaryAccent,
     this.isLoading = false,
     this.padding = const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
   }) : super(key: key);
@@ -28,11 +28,11 @@ class AuthButton extends StatelessWidget {
           style: ButtonStyle(
             backgroundColor: WidgetStateProperty.resolveWith<Color?>((states) {
               if (isLoading || states.contains(WidgetState.disabled)) {
-                return AppColors.bluePrimary.withValues(alpha: 0.5);
+                return AppColors.primaryAccent.withValues(alpha: 0.5);
               }
 
               if (states.contains(WidgetState.hovered)) {
-                return AppColors.bluePrimary.withValues(alpha: 0.8);
+                return AppColors.primaryAccent.withValues(alpha: 0.8);
               }
 
               return color;

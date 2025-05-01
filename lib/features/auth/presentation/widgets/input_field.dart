@@ -29,10 +29,10 @@ class InputField extends StatelessWidget {
           borderSide: BorderSide(color: AppColors.textPrimary),
         ),
         errorBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: AppColors.redPrimary),
+          borderSide: BorderSide(color: Colors.red),
         ),
         focusedErrorBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: AppColors.redPrimary),
+          borderSide: BorderSide(color: Colors.red),
         ),
       ),
       obscureText: obscureText,
