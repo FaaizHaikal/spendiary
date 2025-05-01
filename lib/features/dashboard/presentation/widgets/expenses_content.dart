@@ -35,13 +35,7 @@ class _ExpensesContentState extends State<ExpensesContent> {
         final data = await ExpensesController.getExpensesByPeriod(
           period.toLowerCase(),
         );
-        if (period == 'Week') {
-          for (final point in data) {
-            print(
-              'label: ' + point.label + ', total: ' + (point.total).toString(),
-            );
-          }
-        }
+        
         _chartDataMap[period] = data;
       } catch (e) {
         _chartDataMap[period] = [];
