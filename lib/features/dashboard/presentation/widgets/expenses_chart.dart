@@ -71,7 +71,7 @@ class ExpensesChart extends StatelessWidget {
                           ),
                         );
                       },
-                      reservedSize: 50,
+                      reservedSize: 32,
                     ),
                   ),
                   rightTitles: AxisTitles(
@@ -114,7 +114,26 @@ class ExpensesChart extends StatelessWidget {
                     dotData: FlDotData(show: true),
                     belowBarData: BarAreaData(
                       show: true,
-                      color: AppColors.primaryAccent.withValues(alpha: 0.1),
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          AppColors.primaryAccent.withValues(
+                            alpha: 0.3,
+                          ), // Top color (more visible)
+                          AppColors.primaryAccent.withValues(
+                            alpha: 0.1,
+                          ), // Middle
+                          AppColors.primaryAccent.withValues(
+                            alpha: 0.0,
+                          ), // Bottom (fully transparent)
+                        ],
+                        stops: [
+                          0.0,
+                          0.5,
+                          1.0,
+                        ], // Controls color transition points
+                      ),
                     ),
                   ),
                 ],
