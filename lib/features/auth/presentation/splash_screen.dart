@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:spendiary/core/services/storage_service.dart';
+import 'package:spendiary/features/auth/logic/auth_controller.dart';
 import 'login_screen.dart';
+import 'package:spendiary/features/dashboard/presentation/dashboard_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -18,22 +21,14 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _navigate() async {
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 1));
 
-    final prefs = await SharedPreferences.getInstance();
-    final accessToken = prefs.getString('access_token');
+    final success = await AuthController.attemptAutoLogin();
 
-    if (accessToken != null) {
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(builder: (_) => const DashboardScreen())
-      // );
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   const SnackBar(content: Text('Welcome back!'))
-      // );
+    if (success) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const LoginScreen()),
+        MaterialPageRoute(builder: (_) => const DashboardScreen()),
       );
     } else {
       Navigator.pushReplacement(
