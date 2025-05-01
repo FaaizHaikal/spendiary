@@ -18,8 +18,7 @@ class _ExpensesContentState extends State<ExpensesContent> {
 
   late List<ChartPoint> _chartData;
   late List<Expense> _recentExpenses;
-  bool _isLoading = true;
-  String? _currentLoadingPeriod; // Track which period is currently loading
+  bool _isChartLoading = true;
 
   @override
   void initState() {
@@ -41,8 +40,7 @@ class _ExpensesContentState extends State<ExpensesContent> {
     final period = _periodOptions[_selectedIndex];
     try {
       setState(() {
-        _isLoading = true;
-        _currentLoadingPeriod = period;
+        _isChartLoading = true;
       });
 
       final data = await ExpensesController.getExpensesByPeriod(
@@ -52,16 +50,14 @@ class _ExpensesContentState extends State<ExpensesContent> {
       if (mounted) {
         setState(() {
           _chartData = data;
-          _isLoading = false;
-          _currentLoadingPeriod = null;
+          _isChartLoading = false;
         });
       }
     } catch (e) {
       if (mounted) {
         setState(() {
           _chartData = [];
-          _isLoading = false;
-          _currentLoadingPeriod = null;
+          _isChartLoading = false;
         });
       }
       debugPrint('Error refreshing $period data: $e');
@@ -70,9 +66,6 @@ class _ExpensesContentState extends State<ExpensesContent> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedPeriod = _periodOptions[_selectedIndex];
-    final isCurrentPeriodLoading = _currentLoadingPeriod == selectedPeriod;
-
     return Column(
       children: [
         TogglePeriods(
@@ -88,8 +81,8 @@ class _ExpensesContentState extends State<ExpensesContent> {
         ),
         const SizedBox(height: 20),
 
-        // Show loading only if the CURRENT period is loading
-        isCurrentPeriodLoading
+        // Expenses Chart
+        _isChartLoading
             ? const Center(
               child: Padding(
                 padding: EdgeInsets.all(40.0),
