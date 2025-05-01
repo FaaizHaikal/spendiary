@@ -32,6 +32,8 @@ class ExpensesChart extends StatelessWidget {
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.85,
             child: LineChart(
+              duration: Duration(milliseconds: 1000),
+              curve: Curves.fastEaseInToSlowEaseOut,
               LineChartData(
                 gridData: FlGridData(show: false),
                 titlesData: FlTitlesData(
