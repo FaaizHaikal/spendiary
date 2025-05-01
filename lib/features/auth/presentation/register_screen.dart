@@ -87,7 +87,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _errorMessage = error;
       });
     }
-    
+
     setState(() => _isLoading = false);
   }
 
@@ -106,7 +106,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               controller: _passwordController,
               obscureText: true,
             ),
-                        const SizedBox(height: 12),
+            const SizedBox(height: 12),
             InputField(
               label: 'Confirm Password',
               controller: _confirmPasswordController,
@@ -131,7 +131,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 alignment: Alignment.centerLeft, // Aligns the text to the left
                 child: Text(
                   _errorMessage!,
-                  style: const TextStyle(color: AppColors.redPrimary),
+                  style: const TextStyle(color: AppColors.redAccent),
                 ),
               ),
             const SizedBox(height: 24),
