@@ -3,6 +3,7 @@ import 'package:spendiary/features/auth/logic/auth_controller.dart';
 import 'package:spendiary/features/auth/presentation/widgets/auth_button.dart';
 import 'package:spendiary/features/auth/presentation/widgets/input_field.dart';
 import 'package:spendiary/core/theme/app_colors.dart';
+import 'package:spendiary/features/dashboard/presentation/dashboard_screen.dart';
 import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -35,13 +36,10 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     if (error == null) {
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(builder: (_) => const DashboardScreen())
-      // );
-      ScaffoldMessenger.of(
+      Navigator.pushReplacement(
         context,
-      ).showSnackBar(const SnackBar(content: Text('Login Successful!')));
+        MaterialPageRoute(builder: (_) => const DashboardScreen()),
+      );
     } else {
       setState(() {
         _errorMessage = error;
@@ -72,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 alignment: Alignment.centerLeft, // Aligns the text to the left
                 child: Text(
                   _errorMessage!,
-                  style: const TextStyle(color: AppColors.redPrimary),
+                  style: const TextStyle(color: AppColors.redAccent),
                 ),
               ),
             const SizedBox(height: 24),
