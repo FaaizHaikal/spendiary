@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:spendiary/core/services/storage_service.dart';
 import 'package:spendiary/features/auth/logic/auth_controller.dart';
 import 'login_screen.dart';
 import 'package:spendiary/features/dashboard/presentation/dashboard_screen.dart';
