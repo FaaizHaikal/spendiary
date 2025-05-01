@@ -27,6 +27,22 @@ class AuthController {
     }
   }
 
+  static Future<bool> attemptAutoLogin() async {
+    bool isValid = await AuthService.verifyAccessToken();
+
+    if (!isValid) {
+      print('Unverivied');
+      isValid = await AuthService.refreshAccessToken();
+    }
+
+    if (!isValid) {
+      print('Not refreshed');
+      await StorageService.clearTokens();
+    }
+
+    return isValid;
+  }
+
   static Future<void> logout() async {
     await StorageService.clearTokens();
   }
