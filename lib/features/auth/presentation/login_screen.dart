@@ -80,14 +80,37 @@ class _LoginScreenState extends State<LoginScreen> {
               isLoading: _isLoading,
             ),
             const SizedBox(height: 16),
-            TextButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => const RegisterScreen()),
-                );
-              },
-              child: const Text('Don\'t have an account? Register'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Don\'t have an account?'),
+                SizedBox(width: 4),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (_) => const RegisterScreen()),
+                    );
+                  },
+                  style: ButtonStyle(
+                    overlayColor: WidgetStateProperty.resolveWith(
+                      (_) => Colors.transparent,
+                    ),
+                    splashFactory: NoSplash.splashFactory,
+                    padding: WidgetStateProperty.all(EdgeInsets.zero),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    minimumSize: WidgetStateProperty.all(Size.zero),
+                  ),
+                  child: Text(
+                    'Register',
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      color: AppColors.primary, // Or your custom color
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

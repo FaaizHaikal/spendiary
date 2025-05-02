@@ -141,14 +141,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
               isLoading: _isLoading,
             ),
             const SizedBox(height: 16),
-            TextButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => const LoginScreen()),
-                );
-              },
-              child: const Text("Already have an account? Log in."),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Already have an account?'),
+                SizedBox(width: 4),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (_) => const LoginScreen()),
+                    );
+                  },
+                  style: ButtonStyle(
+                    overlayColor: WidgetStateProperty.resolveWith(
+                      (_) => Colors.transparent,
+                    ),
+                    splashFactory: NoSplash.splashFactory,
+                    padding: WidgetStateProperty.all(EdgeInsets.zero),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    minimumSize: WidgetStateProperty.all(Size.zero),
+                  ),
+                  child: Text(
+                    'Login',
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      color: AppColors.primary, // Or your custom color
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
