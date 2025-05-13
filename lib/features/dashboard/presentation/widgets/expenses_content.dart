@@ -15,8 +15,6 @@ class ExpensesContent extends ConsumerWidget {
 
     const periodOptions = ['Day', 'Week', 'Month', 'Year'];
 
-    print(state.currentChartData);
-
     return Column(
       children: [
         TogglePeriods(
