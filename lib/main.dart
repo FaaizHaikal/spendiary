@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spendiary/core/theme/app_theme.dart';
 import 'features/auth/presentation/splash_screen.dart';
 
 void main() {
-  runApp(const SpendiaryApp());
+  runApp(ProviderScope(child: const SpendiaryApp()));
 }
 
 class SpendiaryApp extends StatelessWidget {
