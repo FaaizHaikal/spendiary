@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -19,20 +20,51 @@ class ExpensesChart extends StatelessWidget {
     return num.toInt().toString();
   }
 
+  double _calculateRoundedMaxY(double maxValue) {
+    if (maxValue <= 0) return 100; // Default minimum range
+    
+    // Calculate appropriate interval
+    final magnitude = pow(10, (log(maxValue) / ln10).floor()).toDouble();
+    final normalized = maxValue / magnitude;
+    
+    double interval;
+    if (normalized <= 2) interval = 0.5 * magnitude;
+    else if (normalized <= 5) interval = 1 * magnitude;
+    else interval = 2 * magnitude;
+    
+    // Round up to the nearest interval
+    return (maxValue / interval).ceil() * interval;
+  }
+
+  double _calculateYInterval(double maxY) {
+    if (maxY <= 5000) return 1000;
+    if (maxY <= 50000) return 10000;
+    if (maxY <= 100000) return 20000;
+    if (maxY <= 500000) return 100000;
+    return 500000;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final maxY = data.map((e) => e.total).reduce((a, b) => a > b ? a : b) * 1.1;
+    final rawMaxY = data.map((e) => e.total).reduce((a, b) => a > b ? a : b) * 1.1;
+    final maxY = _calculateRoundedMaxY(rawMaxY);
+    final yInterval = _calculateYInterval(maxY);
 
     return SizedBox(
-      height: 300,
+      height: 250,
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.only(
+          bottom: 20,
+          left: 8,
+          right: 8,
+        ),
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(),
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.85,
             child: LineChart(
-              duration: Duration(milliseconds: 1000),
+              duration: const Duration(milliseconds: 1000),
               curve: Curves.fastEaseInToSlowEaseOut,
               LineChartData(
                 gridData: FlGridData(show: false),
@@ -42,9 +74,7 @@ class ExpensesChart extends StatelessWidget {
                       showTitles: true,
                       interval: 1,
                       getTitlesWidget: (value, meta) {
-                        if (value >= 0 &&
-                            value < data.length &&
-                            value == value.toInt()) {
+                        if (value >= 0 && value < data.length && value == value.toInt()) {
                           return Padding(
                             padding: const EdgeInsets.only(top: 8.0),
                             child: Text(
@@ -58,16 +88,17 @@ class ExpensesChart extends StatelessWidget {
                         }
                         return const Text('');
                       },
-                      reservedSize: 20, // Add reserved space for labels
+                      reservedSize: 20,
                     ),
                   ),
                   leftTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
+                      interval: yInterval,  // Use calculated interval
                       getTitlesWidget: (value, meta) {
                         return Container(
                           alignment: Alignment.centerRight,
-                          padding: EdgeInsets.only(right: 4.0),
+                          padding: const EdgeInsets.only(right: 4.0, top: 8.0),
                           child: Text(
                             _formatNumber(value),
                             style: const TextStyle(
@@ -92,27 +123,21 @@ class ExpensesChart extends StatelessWidget {
                   border: Border(
                     bottom: BorderSide(color: AppColors.primary, width: 2),
                     left: BorderSide(color: AppColors.primary, width: 2),
-                    top: BorderSide.none, // Disable top border
-                    right: BorderSide.none, // Disable right border
+                    top: BorderSide.none,
+                    right: BorderSide.none,
                   ),
                 ),
                 minX: 0,
                 maxX: (data.length - 1).toDouble(),
                 minY: 0,
-                maxY: maxY,
+                maxY: maxY,  // Use rounded maxY
                 lineBarsData: [
                   LineChartBarData(
-                    spots:
-                        data
-                            .asMap()
-                            .entries
-                            .map(
-                              (entry) => FlSpot(
-                                entry.key.toDouble(),
-                                entry.value.total,
-                              ),
-                            )
-                            .toList(),
+                    spots: data
+                        .asMap()
+                        .entries
+                        .map((entry) => FlSpot(entry.key.toDouble(), entry.value.total))
+                        .toList(),
                     isCurved: true,
                     color: AppColors.primaryAccent,
                     barWidth: 3,
@@ -124,21 +149,11 @@ class ExpensesChart extends StatelessWidget {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
-                          AppColors.primaryAccent.withValues(
-                            alpha: 0.3,
-                          ), // Top color (more visible)
-                          AppColors.primaryAccent.withValues(
-                            alpha: 0.1,
-                          ), // Middle
-                          AppColors.primaryAccent.withValues(
-                            alpha: 0.0,
-                          ), // Bottom (fully transparent)
+                          AppColors.primaryAccent.withOpacity(0.3),
+                          AppColors.primaryAccent.withOpacity(0.1),
+                          AppColors.primaryAccent.withOpacity(0.0),
                         ],
-                        stops: [
-                          0.0,
-                          0.5,
-                          1.0,
-                        ], // Controls color transition points
+                        stops: const [0.0, 0.5, 1.0],
                       ),
                     ),
                   ),
@@ -154,7 +169,6 @@ class ExpensesChart extends StatelessWidget {
                           symbol: 'Rp. ',
                           decimalDigits: 2,
                         ).format(value);
-
                         return LineTooltipItem(
                           formattedValue,
                           const TextStyle(color: AppColors.textPrimary),
