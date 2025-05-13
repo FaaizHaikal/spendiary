@@ -3,6 +3,7 @@ import 'package:spendiary/core/models/expense.dart';
 import 'package:spendiary/features/dashboard/data/models/chart_point.dart';
 import 'package:spendiary/features/dashboard/logic/expenses_controller.dart';
 import 'package:spendiary/features/dashboard/presentation/widgets/expenses_chart.dart';
+import 'package:spendiary/features/dashboard/presentation/widgets/expenses_recent.dart';
 import 'package:spendiary/features/dashboard/presentation/widgets/toggle_periods.dart';
 
 class ExpensesContent extends StatefulWidget {
@@ -14,29 +15,44 @@ class ExpensesContent extends StatefulWidget {
 
 class _ExpensesContentState extends State<ExpensesContent> {
   final List<String> _periodOptions = ['Day', 'Week', 'Month', 'Year'];
-  int _selectedIndex = 1;
+  int _selectedIndex = 2;
 
   late List<ChartPoint> _chartData;
   late List<Expense> _recentExpenses;
+  bool _isRecentExpensesLoading = true;
   bool _isChartLoading = true;
 
   @override
   void initState() {
     super.initState();
     _fetchRecentExpenses();
-    _refreshData();
+    _fetchExpensesChart();
   }
 
   Future<void> _fetchRecentExpenses() async {
     try {
-      _recentExpenses = await ExpensesController.getRecentExpenses(3);
+      setState(() {
+        _isRecentExpensesLoading = true;
+      });
+
+      final data = await ExpensesController.getRecentExpenses(3);
+
+      if (mounted) {
+        setState(() {
+          _recentExpenses = data;
+          _isRecentExpensesLoading = false;
+        });
+      }
     } catch (e) {
-      _recentExpenses = [];
+      setState(() {
+        _recentExpenses = [];
+        _isRecentExpensesLoading = false;
+      });
       debugPrint('Error fetching recent expenses: $e');
     }
   }
 
-  Future<void> _refreshData() async {
+  Future<void> _fetchExpensesChart() async {
     final period = _periodOptions[_selectedIndex];
     try {
       setState(() {
@@ -76,7 +92,7 @@ class _ExpensesContentState extends State<ExpensesContent> {
               _selectedIndex = index;
             });
             // Refresh data when period changes
-            _refreshData();
+            _fetchExpensesChart();
           },
         ),
         const SizedBox(height: 20),
@@ -98,17 +114,47 @@ class _ExpensesContentState extends State<ExpensesContent> {
                     child: Text('No data available'),
                   ),
                   ElevatedButton(
-                    onPressed: _refreshData,
+                    onPressed: _fetchExpensesChart,
                     child: const Text('Retry'),
                   ),
                 ],
               ),
             )
             : RefreshIndicator(
-              onRefresh: _refreshData,
+              onRefresh: _fetchExpensesChart,
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
                 child: ExpensesChart(data: _chartData),
+              ),
+            ),
+
+        _isRecentExpensesLoading
+            ? const Center(
+              child: Padding(
+                padding: EdgeInsets.all(40.0),
+                child: CircularProgressIndicator(),
+              ),
+            )
+            : _recentExpenses.isEmpty
+            ? Center(
+              child: Column(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(40.0),
+                    child: Text('No data available'),
+                  ),
+                  ElevatedButton(
+                    onPressed: _fetchRecentExpenses,
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            )
+            : RefreshIndicator(
+              onRefresh: _fetchExpensesChart,
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: ExpensesRecent(data: _recentExpenses),
               ),
             ),
       ],
