@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:spendiary/core/models/expense.dart';
 import 'package:spendiary/core/theme/app_colors.dart';
+import 'package:spendiary/core/utils.dart';
 
 class ExpensesRecent extends StatelessWidget {
   final List<Expense> data;
@@ -122,7 +123,7 @@ class ExpensesRecent extends StatelessWidget {
 
                           // Amount
                           Text(
-                            '-${_formatCurrency(expense.amount)}',
+                            '-${(expense.amount).toIDR()}',
                             style: const TextStyle(
                               color: AppColors.redAccent,
                               fontSize: 12,
@@ -155,14 +156,5 @@ class ExpensesRecent extends StatelessWidget {
       'Dec',
     ];
     return months[month - 1];
-  }
-
-  String _formatCurrency(double amount) {
-    final formatter = NumberFormat.currency(
-      locale: 'id_ID',
-      symbol: 'Rp. ',
-      decimalDigits: 2,
-    );
-    return formatter.format(amount);
   }
 }
