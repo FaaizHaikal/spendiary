@@ -8,7 +8,8 @@ class DioClient {
       BaseOptions(
         baseUrl: '$baseUrl',
         headers: {'Content-Type': 'application/json'},
-        validateStatus: (status) => true,
+        validateStatus:
+            (status) => status != null && status >= 200 && status < 300,
       ),
     )
     ..interceptors.add(
@@ -39,6 +40,8 @@ class DioClient {
 
               final retry = await dio.fetch(error.requestOptions);
               return handler.resolve(retry);
+            } else {
+              await StorageService.clearTokens();
             }
           }
 
