@@ -105,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     'Register',
                     style: TextStyle(
                       decoration: TextDecoration.underline,
-                      color: AppColors.primary, // Or your custom color
+                      color: AppColors.textPrimary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
