@@ -8,6 +8,7 @@ class DioClient {
       BaseOptions(
         baseUrl: '$baseUrl',
         headers: {'Content-Type': 'application/json'},
+        validateStatus: (status) => true,
       ),
     )
     ..interceptors.add(
@@ -22,6 +23,12 @@ class DioClient {
           return handler.next(options);
         },
         onError: (DioException error, handler) async {
+          final requestPath = error.requestOptions.path;
+
+          if (requestPath == '/api/refresh') {
+            return handler.next(error);
+          }
+
           if (error.response?.statusCode == 401) {
             final successRefresh = await AuthService.refreshAccessToken();
 
