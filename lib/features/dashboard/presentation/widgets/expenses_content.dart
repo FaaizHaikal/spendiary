@@ -1,111 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:spendiary/core/models/expense.dart';
-import 'package:spendiary/features/dashboard/data/models/chart_point.dart';
-import 'package:spendiary/features/dashboard/logic/expenses_controller.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:spendiary/features/dashboard/logic/expenses_provider.dart';
 import 'package:spendiary/features/dashboard/presentation/widgets/expenses_chart.dart';
 import 'package:spendiary/features/dashboard/presentation/widgets/expenses_recent.dart';
 import 'package:spendiary/features/dashboard/presentation/widgets/toggle_periods.dart';
 
-class ExpensesContent extends StatefulWidget {
+class ExpensesContent extends ConsumerWidget {
   const ExpensesContent({super.key});
 
   @override
-  State<ExpensesContent> createState() => _ExpensesContentState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(expensesControllerProvider);
+    final controller = ref.read(expensesControllerProvider.notifier);
 
-class _ExpensesContentState extends State<ExpensesContent> {
-  final List<String> _periodOptions = ['Day', 'Week', 'Month', 'Year'];
-  int _selectedIndex = 2;
+    const periodOptions = ['Day', 'Week', 'Month', 'Year'];
 
-  late List<ChartPoint> _chartData;
-  late List<Expense> _recentExpenses;
-  bool _isRecentExpensesLoading = true;
-  bool _isChartLoading = true;
+    print(state.currentChartData);
 
-  @override
-  void initState() {
-    super.initState();
-    _fetchRecentExpenses();
-    _fetchExpensesChart();
-  }
-
-  Future<void> _fetchRecentExpenses() async {
-    try {
-      setState(() {
-        _isRecentExpensesLoading = true;
-      });
-
-      final data = await ExpensesController.getRecentExpenses(3);
-
-      if (mounted) {
-        setState(() {
-          _recentExpenses = data;
-          _isRecentExpensesLoading = false;
-        });
-      }
-    } catch (e) {
-      setState(() {
-        _recentExpenses = [];
-        _isRecentExpensesLoading = false;
-      });
-      debugPrint('Error fetching recent expenses: $e');
-    }
-  }
-
-  Future<void> _fetchExpensesChart() async {
-    final period = _periodOptions[_selectedIndex];
-    try {
-      setState(() {
-        _isChartLoading = true;
-      });
-
-      final data = await ExpensesController.getExpensesByPeriod(
-        period.toLowerCase(),
-      );
-
-      if (mounted) {
-        setState(() {
-          _chartData = data;
-          _isChartLoading = false;
-        });
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          _chartData = [];
-          _isChartLoading = false;
-        });
-      }
-      debugPrint('Error refreshing $period data: $e');
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Column(
       children: [
         TogglePeriods(
-          options: _periodOptions,
-          selectedIndex: _selectedIndex,
-          onSelected: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-            // Refresh data when period changes
-            _fetchExpensesChart();
-          },
+          options: periodOptions,
+          selectedIndex: state.selectedPeriodIndex,
+          onSelected: controller.updatePeriod,
         ),
         const SizedBox(height: 20),
 
         // Expenses Chart
-        _isChartLoading
+        state.isChartLoading
             ? const Center(
               child: Padding(
                 padding: EdgeInsets.all(40.0),
                 child: CircularProgressIndicator(),
               ),
             )
-            : _chartData.isEmpty
+            : state.currentChartData.isEmpty
             ? Center(
               child: Column(
                 children: [
@@ -114,28 +43,28 @@ class _ExpensesContentState extends State<ExpensesContent> {
                     child: Text('No data available'),
                   ),
                   ElevatedButton(
-                    onPressed: _fetchExpensesChart,
+                    onPressed: controller.fetchPeriodChart,
                     child: const Text('Retry'),
                   ),
                 ],
               ),
             )
             : RefreshIndicator(
-              onRefresh: _fetchExpensesChart,
+              onRefresh: controller.fetchPeriodChart,
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
-                child: ExpensesChart(data: _chartData),
+                child: ExpensesChart(data: state.currentChartData),
               ),
             ),
 
-        _isRecentExpensesLoading
+        state.isRecentLoading
             ? const Center(
               child: Padding(
                 padding: EdgeInsets.all(40.0),
                 child: CircularProgressIndicator(),
               ),
             )
-            : _recentExpenses.isEmpty
+            : state.recentExpenses.isEmpty
             ? Center(
               child: Column(
                 children: [
@@ -144,17 +73,17 @@ class _ExpensesContentState extends State<ExpensesContent> {
                     child: Text('No data available'),
                   ),
                   ElevatedButton(
-                    onPressed: _fetchRecentExpenses,
+                    onPressed: controller.fetchRecentExpenses,
                     child: const Text('Retry'),
                   ),
                 ],
               ),
             )
             : RefreshIndicator(
-              onRefresh: _fetchExpensesChart,
+              onRefresh: controller.fetchRecentExpenses,
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
-                child: ExpensesRecent(data: _recentExpenses),
+                child: ExpensesRecent(data: state.recentExpenses),
               ),
             ),
       ],
