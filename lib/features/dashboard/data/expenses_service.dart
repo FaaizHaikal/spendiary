@@ -24,7 +24,7 @@ class ExpenseService {
   static Future<List<Expense>> getRecentExpenses(int count) async {
     final response = await DioClient.dio.get(
       '/api/user/expenses/recent',
-      queryParameters: {'count': count}
+      queryParameters: {'count': count},
     );
 
     if (response.statusCode != 200) {
@@ -32,7 +32,9 @@ class ExpenseService {
       throw Exception(error);
     }
 
-    return response.data.map((item) => Expense.fromJson(item)).toList();
+    return (response.data as List)
+        .map((item) => Expense.fromJson(item))
+        .toList();
   }
 
   static Future<List<Expense>> getCurrentMonthExpenses() async {
@@ -49,6 +51,8 @@ class ExpenseService {
       throw Exception(error);
     }
 
-    return response.data.map((item) => Expense.fromJson(item)).toList();
+    return (response.data as List)
+        .map((item) => Expense.fromJson(item))
+        .toList();
   }
 }
