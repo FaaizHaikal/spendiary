@@ -50,6 +50,8 @@ class AuthService {
     );
 
     if (response.statusCode != 200) {
+      await StorageService.clearTokens();
+
       return false;
     }
 
