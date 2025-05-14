@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:spendiary/core/models/expense.dart';
 import 'package:spendiary/core/theme/app_colors.dart';
 import 'package:spendiary/core/utils.dart';
 
-class ExpensesRecent extends StatelessWidget {
+class RecentTransaction extends StatelessWidget {
   final List<Expense> data;
+  final bool isExpense;
 
-  const ExpensesRecent({super.key, required this.data});
+  const RecentTransaction({super.key, required this.data, required this.isExpense});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class ExpensesRecent extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  // Navigator.push(context, MaterialPageRoute(builder: (_) => const ExpenseScreen()));
+                  // Navigator.push(context, MaterialPageRoute(builder: (_) => const Transaction()));
                 },
                 style: TextButton.styleFrom(
                   padding: EdgeInsets.zero,
@@ -42,7 +42,7 @@ class ExpensesRecent extends StatelessWidget {
         ConstrainedBox(
           constraints: BoxConstraints(
             maxHeight:
-                MediaQuery.of(context).size.height * 0.25, // Adjust as needed
+                MediaQuery.of(context).size.height * 0.25,
           ),
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
@@ -50,7 +50,7 @@ class ExpensesRecent extends StatelessWidget {
               children:
                   data.asMap().entries.map((entry) {
                     final index = entry.key;
-                    final expense = entry.value;
+                    final item = entry.value;
                     final isOdd = index.isOdd;
 
                     return Padding(
@@ -82,12 +82,10 @@ class ExpensesRecent extends StatelessWidget {
                                           fontSize: 12,
                                           height: 1.1,
                                         ),
-                                        expense.date.day.toString(),
+                                        item.date.day.toString(),
                                       ),
                                       Text(
-                                        _getMonthAbbreviation(
-                                          expense.date.month,
-                                        ),
+                                        item.date.month.monthAbbreviate(),
                                         style: TextStyle(
                                           fontSize: 12,
                                           height: 1.1,
@@ -104,7 +102,7 @@ class ExpensesRecent extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    expense.description,
+                                    item.description,
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12,
@@ -114,7 +112,7 @@ class ExpensesRecent extends StatelessWidget {
                                   const SizedBox(height: 4),
                                   Text(
                                     style: TextStyle(fontSize: 12, height: 0.9),
-                                    '${expense.date.hour.toString().padLeft(2, '0')}:${expense.date.minute.toString().padLeft(2, '0')}',
+                                    '${item.date.hour.toString().padLeft(2, '0')}:${item.date.minute.toString().padLeft(2, '0')}',
                                   ),
                                 ],
                               ),
@@ -122,10 +120,18 @@ class ExpensesRecent extends StatelessWidget {
                           ),
 
                           // Amount
+                          isExpense ?
                           Text(
-                            '-${(expense.amount).toIDR()}',
+                            '-${(item.amount).toIDR()}',
                             style: const TextStyle(
                               color: AppColors.redAccent,
+                              fontSize: 12,
+                            ),
+                          ) :
+                          Text(
+                            '+${(item.amount).toIDR()}',
+                            style: const TextStyle(
+                              color: AppColors.greenAccent,
                               fontSize: 12,
                             ),
                           ),
@@ -138,23 +144,5 @@ class ExpensesRecent extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  String _getMonthAbbreviation(int month) {
-    const months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ];
-    return months[month - 1];
   }
 }
