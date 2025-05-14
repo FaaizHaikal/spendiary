@@ -33,6 +33,24 @@ class AppUtils {
     }
     return num.toInt().toString();
   }
+
+  static String monthAbbreviation(int month) {
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    return months[month - 1];
+  }
 }
 
 extension CurrencyFormatting on num? {
@@ -65,5 +83,11 @@ extension HumanizedFormatting on num? {
       thousandSuffix: thousandSuffix,
       millionSuffix: millionSuffix,
     );
+  }
+}
+
+extension MonthAbrreviationFormatting on int {
+  String monthAbbreviate() {
+    return AppUtils.monthAbbreviation(this);
   }
 }
