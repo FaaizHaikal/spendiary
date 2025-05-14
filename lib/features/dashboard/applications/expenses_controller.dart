@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:spendiary/features/dashboard/data/expenses_service.dart';
-import 'package:spendiary/features/dashboard/data/models/chart_point.dart';
-import 'package:spendiary/features/dashboard/logic/expenses_state.dart';
+import 'package:spendiary/features/dashboard/services/expenses_service.dart';
+import 'package:spendiary/features/dashboard/models/chart_point.dart';
+import 'package:spendiary/features/dashboard/states/expenses_state.dart';
 
 class ExpensesController extends StateNotifier<ExpensesState> {
   ExpensesController() : super(ExpensesState.initial()) {

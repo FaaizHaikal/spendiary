@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:spendiary/features/auth/logic/auth_controller.dart';
-import 'package:spendiary/features/auth/presentation/widgets/auth_button.dart';
-import 'package:spendiary/features/auth/presentation/widgets/input_field.dart';
+import 'package:spendiary/features/auth/applications/auth_controller.dart';
+import 'package:spendiary/features/auth/presentations/widgets/auth_button.dart';
+import 'package:spendiary/features/auth/presentations/widgets/input_field.dart';
 import 'package:spendiary/core/theme/app_colors.dart';
 import 'package:spendiary/features/dashboard/presentation/dashboard_screen.dart';
 import 'register_screen.dart';

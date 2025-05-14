@@ -1,6 +1,6 @@
 import 'package:spendiary/core/services/dio_client.dart';
 import 'package:spendiary/core/services/storage_service.dart';
-import 'models/auth_response.dart';
+import '../models/auth_response.dart';
 
 class AuthService {
   static Future<AuthResponse> login(String username, String password) async {

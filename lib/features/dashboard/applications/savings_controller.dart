@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:spendiary/features/dashboard/data/savings_service.dart';
-import 'package:spendiary/features/dashboard/logic/savings_state.dart';
+import 'package:spendiary/features/dashboard/services/savings_service.dart';
+import 'package:spendiary/features/dashboard/states/savings_state.dart';
 
 class SavingsController extends StateNotifier<SavingsState> {
   SavingsController() : super(SavingsState.initial()) {

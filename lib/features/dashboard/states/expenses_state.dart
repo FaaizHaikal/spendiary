@@ -1,5 +1,5 @@
 import 'package:spendiary/core/models/expense.dart';
-import 'package:spendiary/features/dashboard/data/models/chart_point.dart';
+import 'package:spendiary/features/dashboard/models/chart_point.dart';
 
 class ExpensesState {
   final Map<String, List<ChartPoint>> allChartData;

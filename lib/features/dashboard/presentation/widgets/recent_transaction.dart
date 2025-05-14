@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:spendiary/core/models/expense.dart';
+import 'package:spendiary/core/models/transaction.dart';
 import 'package:spendiary/core/theme/app_colors.dart';
 import 'package:spendiary/core/utils.dart';
 
 class RecentTransaction extends StatelessWidget {
-  final List<Expense> data;
+  final List<Transaction> data;
   final bool isExpense;
 
   const RecentTransaction({

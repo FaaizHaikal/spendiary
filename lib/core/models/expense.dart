@@ -1,4 +1,6 @@
-class Expense {
+import 'package:spendiary/core/models/transaction.dart';
+
+class Expense extends Transaction {
   final DateTime date;
   final String description;
   final double amount;

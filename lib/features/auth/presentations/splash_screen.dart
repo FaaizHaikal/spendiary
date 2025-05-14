@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:spendiary/features/auth/logic/auth_controller.dart';
+import 'package:spendiary/features/auth/applications/auth_controller.dart';
 import 'login_screen.dart';
 import 'package:spendiary/features/dashboard/presentation/dashboard_screen.dart';
 

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:spendiary/core/services/dio_client.dart';
 import 'package:spendiary/core/models/expense.dart';
-import 'package:spendiary/features/dashboard/data/models/chart_point.dart';
+import 'package:spendiary/features/dashboard/models/chart_point.dart';
 
 class ExpenseService {
   static Future<List<ChartPoint>> getExpensesByPeriod(String period) async {

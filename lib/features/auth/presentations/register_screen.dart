@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:spendiary/features/auth/logic/auth_controller.dart';
-import 'package:spendiary/features/auth/presentation/widgets/auth_button.dart';
-import 'package:spendiary/features/auth/presentation/widgets/input_field.dart';
+import 'package:spendiary/features/auth/applications/auth_controller.dart';
+import 'package:spendiary/features/auth/presentations/widgets/auth_button.dart';
+import 'package:spendiary/features/auth/presentations/widgets/input_field.dart';
 import 'package:spendiary/core/theme/app_colors.dart';
-import 'package:spendiary/features/auth/presentation/widgets/password_requirement.dart';
+import 'package:spendiary/features/auth/presentations/widgets/password_requirement.dart';
 import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {

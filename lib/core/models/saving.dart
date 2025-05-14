@@ -1,4 +1,6 @@
-class Saving {
+import 'package:spendiary/core/models/transaction.dart';
+
+class Saving extends Transaction {
   final DateTime date;
   final String description;
   final double amount;
