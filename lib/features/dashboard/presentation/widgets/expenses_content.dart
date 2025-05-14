@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spendiary/features/dashboard/logic/expenses_provider.dart';
 import 'package:spendiary/features/dashboard/presentation/widgets/expenses_chart.dart';
-import 'package:spendiary/features/dashboard/presentation/widgets/expenses_recent.dart';
+import 'package:spendiary/features/dashboard/presentation/widgets/recent_transaction.dart';
 import 'package:spendiary/features/dashboard/presentation/widgets/toggle_periods.dart';
 
 class ExpensesContent extends ConsumerWidget {
@@ -81,7 +81,10 @@ class ExpensesContent extends ConsumerWidget {
               onRefresh: controller.fetchRecentExpenses,
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
-                child: ExpensesRecent(data: state.recentExpenses),
+                child: RecentTransaction(
+                  data: state.recentExpenses,
+                  isExpense: true,
+                ),
               ),
             ),
       ],

@@ -23,7 +23,6 @@ class SavingsState {
     isRecentLoading: false,
   );
 
-
   SavingsState copyWith({
     List<Saving>? recentSavings,
     double? savingsTotal,
@@ -34,7 +33,8 @@ class SavingsState {
     return SavingsState(
       recentSavings: recentSavings ?? this.recentSavings,
       savingsTotal: savingsTotal ?? this.savingsTotal,
-      currentYearSavingsTotal: currentYearSavingsTotal ?? this.currentYearSavingsTotal,
+      currentYearSavingsTotal:
+          currentYearSavingsTotal ?? this.currentYearSavingsTotal,
       isChartLoading: isChartLoading ?? this.isChartLoading,
       isRecentLoading: isRecentLoading ?? this.isRecentLoading,
     );

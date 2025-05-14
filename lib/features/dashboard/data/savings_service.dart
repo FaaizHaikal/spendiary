@@ -4,9 +4,7 @@ import 'package:spendiary/core/models/saving.dart';
 
 class SavingsService {
   static Future<double> getSavingsTotal() async {
-    final response = await DioClient.dio.get(
-      '/api/expenses/total'
-    );
+    final response = await DioClient.dio.get('/api/expenses/total');
 
     if (response.statusCode != 200) {
       final error =

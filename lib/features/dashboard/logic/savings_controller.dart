@@ -9,10 +9,10 @@ class SavingsController extends StateNotifier<SavingsState> {
 
   Future<void> fetchAll() async {
     state = state.copyWith(isChartLoading: true);
-    
+
     await fetchSavingsTotal();
     await fetchCurrentYearSavingsTotal();
-    
+
     state = state.copyWith(isChartLoading: false);
 
     await fetchRecentSavings();

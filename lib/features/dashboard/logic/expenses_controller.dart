@@ -27,13 +27,15 @@ class ExpensesController extends StateNotifier<ExpensesState> {
     state = state.copyWith(isChartLoading: true);
 
     try {
-      final data = await ExpenseService.getExpensesByPeriod(period.toLowerCase());
+      final data = await ExpenseService.getExpensesByPeriod(
+        period.toLowerCase(),
+      );
       final updatedData = Map<String, List<ChartPoint>>.from(state.allChartData)
-      ..[period] = data;
+        ..[period] = data;
       state = state.copyWith(allChartData: updatedData, isChartLoading: false);
     } catch (e) {
       final updatedData = Map<String, List<ChartPoint>>.from(state.allChartData)
-      ..[period] = [];
+        ..[period] = [];
       state = state.copyWith(allChartData: updatedData, isChartLoading: false);
     }
   }

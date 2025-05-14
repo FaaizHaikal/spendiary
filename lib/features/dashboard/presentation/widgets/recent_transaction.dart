@@ -7,7 +7,11 @@ class RecentTransaction extends StatelessWidget {
   final List<Expense> data;
   final bool isExpense;
 
-  const RecentTransaction({super.key, required this.data, required this.isExpense});
+  const RecentTransaction({
+    super.key,
+    required this.data,
+    required this.isExpense,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +45,7 @@ class RecentTransaction extends StatelessWidget {
         ),
         ConstrainedBox(
           constraints: BoxConstraints(
-            maxHeight:
-                MediaQuery.of(context).size.height * 0.25,
+            maxHeight: MediaQuery.of(context).size.height * 0.25,
           ),
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
@@ -120,21 +123,21 @@ class RecentTransaction extends StatelessWidget {
                           ),
 
                           // Amount
-                          isExpense ?
-                          Text(
-                            '-${(item.amount).toIDR()}',
-                            style: const TextStyle(
-                              color: AppColors.redAccent,
-                              fontSize: 12,
-                            ),
-                          ) :
-                          Text(
-                            '+${(item.amount).toIDR()}',
-                            style: const TextStyle(
-                              color: AppColors.greenAccent,
-                              fontSize: 12,
-                            ),
-                          ),
+                          isExpense
+                              ? Text(
+                                '-${(item.amount).toIDR()}',
+                                style: const TextStyle(
+                                  color: AppColors.redAccent,
+                                  fontSize: 12,
+                                ),
+                              )
+                              : Text(
+                                '+${(item.amount).toIDR()}',
+                                style: const TextStyle(
+                                  color: AppColors.greenAccent,
+                                  fontSize: 12,
+                                ),
+                              ),
                         ],
                       ),
                     );
