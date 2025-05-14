@@ -10,7 +10,17 @@ class ExpensesController extends StateNotifier<ExpensesState> {
 
   Future<void> fetchAll() async {
     for (int index = 0; index < ExpensesState.periods.length; index++) {
-      await fetchPeriodChart(index: index); // Pass index directly
+      try {
+        await fetchPeriodChart(index: index); // Pass index directly
+      } catch (e) {
+        final updatedData = Map<String, List<ChartPoint>>.from(
+          state.allChartData,
+        )..[ExpensesState.periods[index]] = [];
+        state = state.copyWith(
+          allChartData: updatedData,
+          isChartLoading: false,
+        );
+      }
     }
 
     await fetchRecentExpenses();
