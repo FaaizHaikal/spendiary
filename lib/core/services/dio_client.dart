@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:spendiary/core/contants.dart';
 import 'package:spendiary/core/services/storage_service.dart';
-import 'package:spendiary/features/auth/data/auth_service.dart';
+import 'package:spendiary/features/auth/services/auth_service.dart';
 
 class DioClient {
   static final Dio dio = Dio(

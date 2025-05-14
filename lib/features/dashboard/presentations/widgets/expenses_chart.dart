@@ -3,8 +3,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:spendiary/core/theme/app_colors.dart';
 import 'package:spendiary/core/utils.dart';
-import 'package:spendiary/features/dashboard/data/models/chart_point.dart';
-import 'package:spendiary/features/dashboard/presentation/widgets/chart_container.dart';
+import 'package:spendiary/features/dashboard/models/chart_point.dart';
+import 'package:spendiary/features/dashboard/presentations/widgets/chart_container.dart';
 
 class ExpensesChart extends StatefulWidget {
   final List<ChartPoint> data;
