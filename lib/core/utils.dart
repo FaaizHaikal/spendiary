@@ -18,6 +18,21 @@ class AppUtils {
           decimalDigits: decimalDigits,
         );
   }
+
+  static String humanReadableFormatter(
+    double num, {
+    int decimalDigits = 1,
+    String thousandSuffix = 'K',
+    String millionSuffix = 'M',
+  }) {
+    if (num >= 1000000) {
+      return '${(num / 1000000).toStringAsFixed(decimalDigits)}$millionSuffix';
+    }
+    if (num >= 1000) {
+      return '${(num / 1000).toStringAsFixed(decimalDigits)}$thousandSuffix';
+    }
+    return num.toInt().toString();
+  }
 }
 
 extension CurrencyFormatting on num? {
@@ -33,5 +48,22 @@ extension CurrencyFormatting on num? {
       symbol: symbol,
       compact: compact,
     ).format(this!); // Format directly using the formatter
+  }
+}
+
+extension HumanizedFormatting on num? {
+  String humanReadable({
+    int decimalDigits = 1,
+    String thousandSuffix = 'K',
+    String millionSuffix = 'M',
+  }) {
+    if (this == null) return '${(0).toStringAsFixed(decimalDigits)}';
+
+    return AppUtils.humanReadableFormatter(
+      this!.toDouble(),
+      decimalDigits: decimalDigits,
+      thousandSuffix: thousandSuffix,
+      millionSuffix: millionSuffix,
+    );
   }
 }
