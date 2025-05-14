@@ -12,6 +12,7 @@ class DioClient {
             (status) => status != null && status >= 200 && status < 300,
       ),
     )
+    // ..interceptors.add(LogInterceptor(responseBody: true))
     ..interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {

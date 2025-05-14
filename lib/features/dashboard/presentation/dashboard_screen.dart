@@ -14,7 +14,7 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   int _selectedIndex = 0;
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,18 +27,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Consumer(
               builder: (context, ref, _) {
                 final total = ref.watch(
-                  expensesControllerProvider.select((state) => state.total)
+                  expensesControllerProvider.select((state) => state.total),
                 );
 
                 return Column(
                   children: [
                     _selectedIndex == 0
-                        ? const Text('Total Expenses', style: TextStyle(fontSize: 16))
-                        : const Text('Total Savings', style: TextStyle(fontSize: 16)),
+                        ? const Text(
+                          'Total Expenses',
+                          style: TextStyle(fontSize: 16),
+                        )
+                        : const Text(
+                          'Total Savings',
+                          style: TextStyle(fontSize: 16),
+                        ),
                     const SizedBox(height: 4),
                     Text(
                       total.toIDR(decimalDigits: 0),
-                      style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 );
@@ -50,11 +59,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
               selectedIndex: _selectedIndex,
               onSelected: (index) => setState(() => _selectedIndex = index),
             ),
-            const SizedBox(height: 20),
-            if (_selectedIndex == 0) 
-              const ExpensesContent() 
-            else 
+            if (_selectedIndex == 0)
+              const ExpensesContent()
+            else
               const Text('Savings'),
+            // const
           ],
         ),
       ),

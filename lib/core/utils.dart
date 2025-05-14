@@ -8,15 +8,15 @@ class AppUtils {
   }) {
     return compact
         ? NumberFormat.compactCurrency(
-            locale: 'id_ID',
-            symbol: symbol,
-            decimalDigits: decimalDigits,
-          )
+          locale: 'id_ID',
+          symbol: symbol,
+          decimalDigits: decimalDigits,
+        )
         : NumberFormat.currency(
-            locale: 'id_ID',
-            symbol: symbol,
-            decimalDigits: decimalDigits,
-          );
+          locale: 'id_ID',
+          symbol: symbol,
+          decimalDigits: decimalDigits,
+        );
   }
 }
 
