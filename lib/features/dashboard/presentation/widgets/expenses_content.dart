@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:spendiary/features/dashboard/logic/expenses_provider.dart';
+import 'package:spendiary/features/dashboard/providers/expenses_provider.dart';
 import 'package:spendiary/features/dashboard/presentation/widgets/expenses_chart.dart';
 import 'package:spendiary/features/dashboard/presentation/widgets/recent_transaction.dart';
 import 'package:spendiary/features/dashboard/presentation/widgets/toggle_periods.dart';
