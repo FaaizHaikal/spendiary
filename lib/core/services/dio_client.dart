@@ -9,7 +9,8 @@ class DioClient {
         baseUrl: '$baseUrl',
         headers: {'Content-Type': 'application/json'},
         validateStatus:
-            (status) => status != null && status >= 200 && status < 300,
+            (status) => 
+        status != null && (status >= 200 && status < 300 || status == 401),
       ),
     )
     // ..interceptors.add(LogInterceptor(responseBody: true))
@@ -26,6 +27,8 @@ class DioClient {
         },
         onError: (DioException error, handler) async {
           final requestPath = error.requestOptions.path;
+
+          print(requestPath);
 
           if (requestPath == '/api/refresh') {
             return handler.next(error);

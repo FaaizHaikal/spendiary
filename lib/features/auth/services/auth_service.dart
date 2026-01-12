@@ -34,6 +34,8 @@ class AuthService {
   static Future<bool> verifyAccessToken() async {
     final response = await DioClient.dio.get('/api/user/verify');
 
+    print(response.statusCode);
+
     return response.statusCode == 200;
   }
 

@@ -20,14 +20,6 @@ class _LoginScreenState extends State<LoginScreen> {
   String? _errorMessage;
 
   Future<void> _handleLogin() async {
-    if (_usernameController.text.isEmpty || _passwordController.text.isEmpty) {
-      setState(() {
-        _errorMessage = "Username and password cannot be empty.";
-      });
-
-      return;
-    }
-
     setState(() => _isLoading = true);
 
     final error = await AuthController.login(

@@ -3,6 +3,10 @@ import 'package:spendiary/core/services/storage_service.dart';
 
 class AuthController {
   static Future<String?> login(String username, String password) async {
+    if (username.isEmpty || password.isEmpty) {
+      throw "Username or password can not be empty";
+    }
+
     try {
       final response = await AuthService.login(username, password);
 
@@ -18,6 +22,10 @@ class AuthController {
   }
 
   static Future<String?> register(String username, String password) async {
+    if (username.isEmpty || password.isEmpty) {
+      throw "Username or password can not be empty";
+    }
+
     try {
       await AuthService.register(username, password);
 

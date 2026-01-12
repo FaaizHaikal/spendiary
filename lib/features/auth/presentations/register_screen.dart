@@ -60,14 +60,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return;
     }
 
-    if (_usernameController.text.isEmpty) {
-      setState(() {
-        _errorMessage = "Username cannot be empty.";
-      });
-
-      return;
-    }
-
     setState(() => _isLoading = true);
 
     final error = await AuthController.register(
